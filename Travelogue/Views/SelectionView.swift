@@ -113,6 +113,16 @@ struct ImageScrollView : View {
                                 .shadow(color:.gray,radius: 5)
                         }
                         
+                        if multipleSelectionActivated && selectionVM.selectedImageModels.contains(item) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .alignmentGuide(VerticalAlignment.bottom, computeValue: { dimension in
+                                    dimension[.bottom] + 90
+                                })
+                                .foregroundColor(.white)
+                                .padding(4)
+                                
+                        }
+                        
                     }
                 }
             })
