@@ -41,8 +41,7 @@ struct SelectionView: View {
                                 .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
                                 .font(.custom("Courier", size: 16))
                                 .padding()
-                                .frame(width: 300
-                                       , height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            
                             
                             Button(action: {
                                 multipleSelectionActivated.toggle()
@@ -59,7 +58,7 @@ struct SelectionView: View {
                                     .cornerRadius(12)
                             })
 
-                        }
+                        }.frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealWidth: .infinity, maxWidth: .infinity, minHeight: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealHeight: 20, maxHeight: 20, alignment: .trailing)
                         
                         ImageScrollView(geometry: geometry, selectionVM: selectionVM, multipleSelectionActivated: $multipleSelectionActivated)
                         
@@ -116,7 +115,7 @@ struct ImageScrollView : View {
                         if multipleSelectionActivated && selectionVM.selectedImageModels.contains(item) {
                             Image(systemName: "checkmark.circle.fill")
                                 .alignmentGuide(VerticalAlignment.bottom, computeValue: { dimension in
-                                    dimension[.bottom] + 90
+                                    dimension[.bottom] + 91
                                 })
                                 .foregroundColor(.white)
                                 .padding(4)
@@ -134,8 +133,9 @@ struct ImageScrollView : View {
 
 struct SelectionView_Preview: PreviewProvider {
     static var previews: some View {
-        Group {
-            SelectionView(selectionVM: SelectionViewModel())
-        }
+        SelectionView(selectionVM: SelectionViewModel())
+            .previewDevice("iPhone SE (2nd generation)")
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
     }
 }

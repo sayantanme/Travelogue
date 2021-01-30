@@ -23,12 +23,13 @@ class SelectionViewModel: ObservableObject {
     func fetchAllPhotos() {
         let fetchOptions = PHFetchOptions()
         fetchOptions.includeAssetSourceTypes = .typeUserLibrary
-        //fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        fetchOptions.predicate = NSPredicate(format: "mediaType = %d || (mediaType = %d && duration < %f)", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue, 30)
         fetchOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate", ascending: false)
         ]
         let allPhotos = PHAsset.fetchAssets(with: fetchOptions)
         allPhotos.enumerateObjects { (asset, count, stop) in
+            print(asset.mediaType.rawValue)
             if asset.mediaType ==  .image {
                 self.addUIImage(asset: asset) { model in
                     self.imageModel.append(model)
@@ -38,8 +39,9 @@ class SelectionViewModel: ObservableObject {
                             self.assets = sortedModels
                         }
                     }
+                    print("Total:\(allPhotos.count) Processed:\(self.imageModel.count)")
                 }
-            } else {
+            } else if asset.mediaType == .video {
                 self.addVideo(asset: asset){ model in
                     self.imageModel.append(model)
                     if self.imageModel.count == allPhotos.count {
@@ -48,6 +50,7 @@ class SelectionViewModel: ObservableObject {
                             self.assets = sortedModels
                         }
                     }
+                    print("Total:\(allPhotos.count) Processed:\(self.imageModel.count)")
                 }
                 
             }
